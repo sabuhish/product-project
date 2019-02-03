@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
 from .modules.users import *
 
-
+# salam bu testdir git ucun
 @login_required(login_url="/")
 def login(request):
     context= {}

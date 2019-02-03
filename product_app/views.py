@@ -5,6 +5,7 @@ from .forms import ProductForm
 from .modules.users import *
 
 # salam bu testdir git ucun
+# sadasd;
 @login_required(login_url="/")
 def login(request):
     context= {}

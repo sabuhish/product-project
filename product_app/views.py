@@ -1,31 +1,48 @@
 from django.shortcuts import render, redirect
-from product_app.models import Productlar
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from .models import Productlar
 from django.contrib.auth.decorators import login_required
-from .forms import ProductForm
-from .modules.users import *
+from .forms import *
 
-# bu yeni deyisiklikdir pull requesti yoxlamaq ucun
-@login_required(login_url="/")
-def login(request):
-    context= {}
+def login_page_data():
+    return {
+        "login_form": LoginForm()
+    }
+
+def baseindexview(request):
+    if request.user.is_authenticated:
+        return redirect("list_product")
+    context = login_page_data()
     return render(request, "login.html", context)
 
-def login_page(request):
-    params = {
-            
-        }
-    if request.POST.get('login_btn') == '1':
-        Username = request.POST.get('Username','')
-        Password = request.POST.get('Password','')
-        user_id = get_user(Username,Password)
-        if not user_id:
-            params['error_msg'] = "Login or password is wrong"
-        else :
-            request.session['user'] = user_id
-            return redirect('product/')
-             
 
-    return render(request,'login.html',params)
+
+def login_view(request):
+    if request.method == "POST":
+        context = login_page_data()
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+            if user and user.is_active:
+                login(request, user)
+                return redirect("list_product")
+            else:
+                context["message"] = "username or password invalid !"
+                return render(request, "login.html", context)
+        else:
+            context["login_form"] = form
+            return render(request, "login.html", context)
+    else:
+        return redirect("home")
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")
+
+
+
 
 @login_required(login_url="/")
 def list_product(request):

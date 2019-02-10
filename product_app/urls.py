@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import *
+from . import views
 
 urlpatterns = [
-    path("", login_page, name="login-page"),
-    path("product/", list_product, name="list_product"),
-    path("new_product/", create_product, name="create_product"),
-    path("update/<int:id>/", update_product, name="update_product"),
-    path("delete/<int:id>/", delete_product, name="delete_product")
+    path("", views.baseindexview, name="home"),
+    path("login/", views.login_view, name="login"),
+    path('logout/', views.logout_view, name="logout"),
+    path("product/", views.list_product, name="list_product"),
+    path("new_product/", views.create_product, name="create_product"),
+    path("update/<int:id>/", views.update_product, name="update_product"),
+    path("delete/<int:id>/", views.delete_product, name="delete_product")
 ]

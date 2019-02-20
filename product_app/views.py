@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import  HttpResponse
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from .models import Productlar
 from django.contrib.auth.decorators import login_required
 from .forms import *
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 def login_page_data():
     return {
@@ -47,17 +50,34 @@ def logout_view(request):
 @login_required(login_url="/")
 def list_product(request):
     products = Productlar.objects.all()
-    return render(request, "product.html", {"products": products})
+    if "q" in request.GET:
+        query = request.GET.get("q")
+        lookups = Q(kod__icontains=query) | Q(adi__icontains=query) | Q(gram__icontains=query)
+        products = Productlar.objects.filter(lookups).distinct()
+    
+    paginator = Paginator(products, 5) # Show 2 contacts per page
+    page = request.GET.get('page')
+    products = paginator.get_page(page)
+    if page:
+        page_range = paginator.page_range[int(page) - 3 if int(page) > 3 else 0:int(page) + 3]
+    else:
+        page_range = paginator.page_range[0:3]
+    return render(request, "product.html", {"products": products,"page_range":page_range})
+
 
 
 @login_required(login_url="/")
 def create_product(request):
     form = ProductForm(request.POST or None)
+    form_1 = ImageForm(request.POST)
 
     if form.is_valid():
         form.save()
+        # obj = form.save()
+        # obj.sas = 21
+        # obj.save()
         return redirect("list_product")
-    return render(request, "products-form.html", {"form": form})
+    return render(request, "products-form.html", {"form": form}, {"form_1": form_1})
 
 
 @login_required(login_url="/")
@@ -78,3 +98,37 @@ def delete_product(request, id):
         product.delete()
         return redirect("list_product")
     return render(request, "product-delete-confirm.html", {"product": product })
+
+
+
+def searchposts(request):
+    if request.method == 'GET':
+        query= request.GET.get('q')
+
+        submitbutton= request.GET.get('submit')
+
+        if query is not None:
+            lookups= Q(kod__icontains=query) | Q(adi__icontains=query) | Q(gram__icontains=query)
+
+            results= Productlar.objects.filter(lookups).distinct()
+
+            context={'results': results,
+                     'submitbutton': submitbutton}
+
+            return render(request, 'search.html', context)
+
+        else:
+            return render(request, 'search.html')
+
+    else:
+        return render(request, 'search.html')
+
+def upload_pic(request):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            m = ExampleModel.objects.get(pk=course_id)
+            m.model_pic = form.cleaned_data['image']
+            m.save()
+            return HttpResponse('image upload success')
+    return HttpResponseForbidden('allowed only via POST')

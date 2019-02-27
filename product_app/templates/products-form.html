@@ -24,10 +24,13 @@
                    <div>
                        
                    </div>
-                <form method="post" >
-                    
+                <form method="post" enctype="multipart/form-data">
+                    {{form.errors}}
+                    <!-- {{form_1.errors}} -->
                     {{form|crispy}}
                     {{form_1|crispy}}
+                    <img src="{{product.image.url}}" alt="image"></img>
+                    <!-- {{context}} -->
                     <button type="submit" class="btn btn-info">Save</button>
 
                     {% csrf_token %}

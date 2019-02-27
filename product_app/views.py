@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import  HttpResponse
 from django.contrib.auth import authenticate, get_user_model, login, logout
-from .models import Productlar
+from .models import *
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib import messages
 
 def login_page_data():
     return {
@@ -69,21 +70,43 @@ def list_product(request):
 @login_required(login_url="/")
 def create_product(request):
     form = ProductForm(request.POST or None)
-    form_1 = ImageForm(request.POST)
+    form_1 = ImageForm(request.POST, request.FILES)
+    if request.method == 'POST':
+       
+        if form.is_valid() and form_1.is_valid():
+            product = form.save()
+            image = form_1.save(commit=False)
+            image.sekil = product
+            image.save()
+            messages.success(request, f'Deyisiklik qeyde alindi!')
+            # obj = form.save()
+            # obj.sas = 21
+            # obj.save()
+            return redirect("list_product")
+    context = {
+            'form': form,
+            'form_1': form_1
+        } 
+    return render(request, "products-form.html", context)
 
-    if form.is_valid():
-        form.save()
-        # obj = form.save()
-        # obj.sas = 21
-        # obj.save()
-        return redirect("list_product")
-    return render(request, "products-form.html", {"form": form}, {"form_1": form_1})
-
+# @login_required(login_url='/')
+# def add_post_view(request):
+#     if request.method == "POST":
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.save()
+#             context = {
+#                 "posts": Post.objects.all()
+#             }
+#             return render(request, "list_product")
+#     return render(request, "products-form.html", context)
 
 @login_required(login_url="/")
 def update_product(request, id):
     product = Productlar.objects.get(id=id)
     form = ProductForm(request.POST or None, instance=product)
+    form_1 = ImageForm(request.POST, request.FILES)
 
     if form.is_valid():
         form.save()

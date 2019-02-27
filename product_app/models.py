@@ -13,7 +13,8 @@ class Productlar(models.Model):
     kod = models.IntegerField()
     adi = models.CharField(max_length=250)
     əyar = models.IntegerField(blank=False, null=True)
-    qiymeti =models.DecimalField(max_digits=10, decimal_places=2)
+    alis_qiymeti = models.DecimalField(max_digits=10, decimal_places=2)
+    satis_qiymeti = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
     miqdari = models.IntegerField()
     gram = models.DecimalField(null=False, max_digits=10, decimal_places=2)
     məzənnə = models.DecimalField(blank=False, null=True, max_digits=10, decimal_places=3)
@@ -53,7 +54,7 @@ class Productlar(models.Model):
 #         return value
 class Images(models.Model):
     sekil = models.ForeignKey('Productlar', on_delete=models.CASCADE)
-    image =models.ImageField(max_length=250, upload_to="pictures", height_field=None, width_field=None)
+    image =models.ImageField(blank=True, default='default.jpg', null=True,max_length=250, upload_to="pictures", height_field=None, width_field=None)
 
 
     def save(self, *args, **kwargs):

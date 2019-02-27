@@ -4,7 +4,7 @@ from .models import Productlar, Images
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Productlar
-        fields = ["kod","adi","əyar", "qiymeti", "gram", "miqdari","məzənnə", "status", "publish_1"]
+        fields = ["kod","adi","əyar", "alis_qiymeti", "satis_qiymeti", "gram", "miqdari","məzənnə", "status", "publish_1"]
 
 class ImageForm(forms.ModelForm):
     class Meta:

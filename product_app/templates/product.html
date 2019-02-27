@@ -47,12 +47,13 @@
 				<th>#</th>
 				<th>Kod</th>
 				<th>Adı</th>
-				<th>Qiymeti</th>
+				<th>Alis qiymeti</th>
+				<th>Satis qiymeti</th>
 				<th>Əyar</th>
 				<th>Miqdarı </th>		
 				<th>Gram</th>
 				<th>Məzənnə</th>
-				<th>Alis Tarixi</th>
+				<th>Alis \Tarixi</th>
 				<th>Satis Tarixi</th>
 				<th>Status</th>
 				<th>Dəyişiklik</th>
@@ -66,7 +67,8 @@
 				<td>{{product.id}}</td>
 				<td>{{product.kod}}</td>
 				<td>{{product.adi }}</td>
-				<td>{{product.qiymeti}}</td>
+				<td>{{product.alis_qiymeti}}</td>
+				<td>{{product.satis_qiymeti}}</td>
 				<td>{{product.əyar}}</td>
 				
 				<td>{{product.miqdari}}</td>
@@ -150,7 +152,7 @@
 					<span class="step-links">
 						{% if products.has_previous %}
 							<a class="btn btn-info mb-4" href="?page=1">&laquo; First</a>
-							<a class="btn btn-info mb-4" href="?page={{ products.previous_page_number }}">Previous</a>
+							<!-- <a class="btn btn-info mb-4" href="?page={{ products.previous_page_number }}">Previous</a> -->
 						{% endif %}
 				
 						<span class="current">
@@ -165,7 +167,7 @@
 				
 						{% if products.has_next %}
 							<a class="btn btn-info mb-4" href="?page={{ products.next_page_number }}">Next</a>
-							<a class="btn btn-info mb-4" href="?page={{ products.paginator.num_pages }}">Last &raquo;</a>
+							<!-- <a class="btn btn-info mb-4" href="?page={{ products.paginator.num_pages }}">Last &raquo;</a> -->
 						{% endif %}
 					
 					</span>

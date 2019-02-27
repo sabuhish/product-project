@@ -1,0 +1,36 @@
+database mysql qosmaq:
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME':  "product_project", yeni yaradtdim mysqlde
+#         "USER": 'root',
+#         "PASSWORD": 'sabuhi1234567890',
+#         "HOST": '127.0.0.1',
+#         "PORT": 3306,
+#     }
+# }
+
+docker-compose.yml file: for mysql:
+
+services:
+ mysql:
+  image: mysql: 5.7
+  container_name: mysql
+  volumes:
+    - mysql-volume:/var.lib.mysql
+  {% comment %} restart: always bu olsun? {% endcomment %}
+  environment:
+    MYSQL_ROOT_PASSWORD: root 
+    MYSQL_DATABASE: db
+    MYSQL_USER: product_project
+    MYSQL_PASSWORD: sabuhi1234567890
+
+{% comment %} check if that is right or not {% endcomment %}
+
+product appda sekil yuklemek, not required field save olunmur 
+{% comment %} 
+database makemigrate sifirlamak ve makemigrate elemek lazimdir.
+photo upload
+
+ {% endcomment %}

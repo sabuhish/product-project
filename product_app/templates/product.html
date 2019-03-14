@@ -23,7 +23,7 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-						<h2>Mehsulların <b>İdarə Olunması</b></h2>
+						<h3 class="text-center">Mehsulların <b>İdarə Olunması</b></h3>
 					</div>
                 </div>
 			</div>
@@ -31,7 +31,7 @@
 					<div>
 							<form method="POST" action="{% url 'logout' %}">
 									<a href="{% url 'logout' %}">
-									<button style="float:right;" name="submit" type="submit" class="btn btn-danger">Logout</button>
+									<button style="float:right;" name="submit" type="submit" class="btn btn-danger">Çıxış</button>
 								</a>
 								{% csrf_token %}
 								{{form|crispy}}
@@ -44,7 +44,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>#</th>
+				<th>Sıra</th>
 				<th>Kod</th>
 				<th>Adı</th>
 				<th>Alis qiymeti</th>
@@ -53,7 +53,7 @@
 				<th>Miqdarı </th>		
 				<th>Gram</th>
 				<th>Məzənnə</th>
-				<th>Alis \Tarixi</th>
+				<th>Alis Tarixi</th>
 				<th>Satis Tarixi</th>
 				<th>Status</th>
 				<th>Dəyişiklik</th>
@@ -69,12 +69,12 @@
 				<td>{{product.adi }}</td>
 				<td>{{product.alis_qiymeti}}</td>
 				<td>{{product.satis_qiymeti}}</td>
-				<td>{{product.əyar}}</td>
+				<td>{{product.eyar}}</td>
 				
 				<td>{{product.miqdari}}</td>
 				
 				<td>{{product.gram}}</td>
-				<td>{{product.məzənnə}}</td>
+				<td>{{product.mezenne}}</td>
 				<td>{{product.publish}}</td> 
 				<td>{{product.publish_1}}</td>
 				<td>
@@ -89,8 +89,8 @@
 						{% endif %}
 						</td>
 							
-				<td><a href="{% url 'update_product' product.id %}" class="btn btn-primary"><i class="fa fa-edit">  Edit</i></a></td>
-				<td> <a href="{% url 'delete_product' product.id  %}" class="btn btn-danger"><i class="fa fa-cut">  Cut</i></a></td>
+				<td><a href="{% url 'update_product' product.id %}" class="btn btn-primary"><i class="fa fa-edit">  Düzəliş</i></a></td>
+				<td> <a href="{% url 'delete_product' product.id  %}" class="btn btn-danger"><i class="fa fa-cut">  Silmək</i></a></td>
 			
 			</tr>
 		
@@ -139,7 +139,7 @@
 					{% if request.GET.q %}
 					<a href="{% url 'list_product' %}" class="btn btn-danger" style=" margin: auto;
 					padding: inherit; ">Filteri temizle</button>
-					{%endif%}
+					{% endif %}
 			</div>
 		</div>
 		
@@ -152,7 +152,6 @@
 					<span class="step-links">
 						{% if products.has_previous %}
 							<a class="btn btn-info mb-4" href="?page=1">&laquo; First</a>
-							<!-- <a class="btn btn-info mb-4" href="?page={{ products.previous_page_number }}">Previous</a> -->
 						{% endif %}
 				
 						<span class="current">

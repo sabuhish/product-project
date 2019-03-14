@@ -7,6 +7,7 @@ from .forms import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib import messages
+from datetime import datetime
 
 def login_page_data():
     return {
@@ -109,7 +110,10 @@ def update_product(request, id):
     form_1 = ImageForm(request.POST, request.FILES)
 
     if form.is_valid():
-        form.save()
+        updated_product = form.save(commit=False)
+        if product.status != Productlar.STATUS_SOLD_OUT and updated_product.status == Productlar.STATUS_SOLD_OUT:
+            updated_product.publish_1 = datetime.now()
+        updated_product.save()
         return redirect("list_product")
     return render(request, "products-form.html", {"form":form, "product":product})
 
@@ -146,12 +150,12 @@ def searchposts(request):
     else:
         return render(request, 'search.html')
 
-def upload_pic(request):
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            m = ExampleModel.objects.get(pk=course_id)
-            m.model_pic = form.cleaned_data['image']
-            m.save()
-            return HttpResponse('image upload success')
-    return HttpResponseForbidden('allowed only via POST')
+# def upload_pic(request):
+#     if request.method == 'POST':
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             m = ExampleModel.objects.get(pk=course_id)
+#             m.model_pic = form.cleaned_data['image']
+#             m.save()
+#             return HttpResponse('image upload success')
+#     return HttpResponseForbidden('allowed only via POST')

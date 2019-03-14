@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 from PIL import Image
+from django.utils.translation import ugettext_lazy as _
 
 # label="malin adi"
 # ,uppercase=True
@@ -10,16 +11,21 @@ class Productlar(models.Model):
     STATUS_SOLD_OUT = 2
     STATUS_REJECTED = 3
 
-    kod = models.IntegerField()
-    adi = models.CharField(max_length=250)
-    əyar = models.IntegerField(blank=False, null=True)
-    alis_qiymeti = models.DecimalField(max_digits=10, decimal_places=2)
-    satis_qiymeti = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True )
+
+# is_staff = models.BooleanField( default=False,
+# help_text=_('Designates whether the user can log into this admin '
+# 'site.'))
+
+    kod = models.IntegerField(help_text=_('Məhsulun kodunu qeyd edin. '))
+    adi = models.CharField(max_length=250,help_text=_('Məhsulun adını qeyd edin. '))
+    eyar = models.IntegerField(blank=False, null=True,help_text=_('Məhsulun əyarını qeyd edin. '))
+    alis_qiymeti = models.DecimalField(max_digits=10, decimal_places=2,help_text=_('Məhsulu aldıgınız qiyməti qeyd edin. '))
+    satis_qiymeti = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text=_('Məhsulu planlaşdırğınız satış qiymətini daxil edin ')) 
     miqdari = models.IntegerField()
-    gram = models.DecimalField(null=False, max_digits=10, decimal_places=2)
-    məzənnə = models.DecimalField(blank=False, null=True, max_digits=10, decimal_places=3)
+    gram = models.DecimalField(null=False, max_digits=10, decimal_places=2,help_text=_('Qramı ilə bağlı məlumat daxil edin. ')) 
+    mezenne = models.DecimalField(blank=False, null=True, max_digits=10, decimal_places=3, help_text=_('Bugünün məzənnəsinə uyğun yazın '))
     publish = models.DateTimeField(default=timezone.now)
-    publish_1 = models.DateTimeField(default=timezone.now)
+    publish_1 = models.DateTimeField(default=timezone.now, null=True, blank=True, help_text=_('Tarixi qeyd edin zehmet olmasa. '))
     status = models.IntegerField(choices=(
         (STATUS_CREATED, 'Satisda'),
         (STATUS_SOLD_OUT, "Satildi"),

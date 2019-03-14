@@ -79,7 +79,7 @@ def create_product(request):
             image = form_1.save(commit=False)
             image.sekil = product
             image.save()
-            messages.success(request, f'Deyisiklik qeyde alindi!')
+            messages.success(request, f'Yeni məhsul uğurla əlavə olundu!')
             # obj = form.save()
             # obj.sas = 21
             # obj.save()
@@ -114,6 +114,8 @@ def update_product(request, id):
         if product.status != Productlar.STATUS_SOLD_OUT and updated_product.status == Productlar.STATUS_SOLD_OUT:
             updated_product.publish_1 = datetime.now()
         updated_product.save()
+        messages.success(request, f'Məhsulda düzəliş qeydə alındı!')
+        
         return redirect("list_product")
     return render(request, "products-form.html", {"form":form, "product":product})
 

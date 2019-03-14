@@ -17,8 +17,21 @@
 
 </head>
 <body>
+
 	{% load crispy_forms_tags %}
     <div class="container">
+			<div>
+					<main role="main" class="container">
+							<div class="row" class="text-center">
+							  <div class="col-md-8">
+								{% if messages %}
+								  {% for message in messages %}
+									<div class="alert alert-{{ message.tags }}">
+									  {{ message }}
+									</div>
+								  {% endfor %}
+								{% endif %}
+							</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Productlar, Images
-from django.forms import ModelForm, Textarea, TextInput, CharField
+from django.forms import ModelForm, Textarea, TextInput, CharField, FileInput
 from django.utils.translation import ugettext_lazy as _
 
 class ProductForm(ModelForm):
@@ -65,7 +65,12 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Images
         fields = ["image"]
-
+        labels ={
+            "image" :"Şəkil əlave etmək"
+        }
+        # widgets = {
+        #     'docFile': forms.FileInput(attrs={'class': 'my_class'}),
+        # }
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
